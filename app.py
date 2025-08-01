@@ -1,7 +1,6 @@
 import streamlit as st
 import numpy as np
 import pandas as pd
-pip install joblib 
 import joblib
 # ================== Load Model and Threshold ==================
 best_threshold = joblib.load("best_threshold.pkl")  # saved earlier
