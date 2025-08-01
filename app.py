@@ -1,16 +1,16 @@
 import streamlit as st
-import numpy as np
 import pandas as pd
 import joblib
 
-# ================== Load Model and Threshold ==================
-stack_model = joblib.load("stacked_model.pkl")  # Your saved model
-best_threshold = joblib.load("best_threshold.pkl")  # Your saved threshold
+# ===== Load the single PKL file =====
+model_data = joblib.load("final_stacked_model.pkl")
+stack_model = model_data["model"]
+best_threshold = model_data["threshold"]
 
 st.title("Employee Attrition Prediction App")
-st.write("Fill in the employee details below to predict the likelihood of attrition.")
+st.write("Fill in employee details to predict attrition risk.")
 
-# ================== Define Inputs ==================
+# ===== User Inputs =====
 monthly_income = st.number_input("Monthly Income", min_value=0, value=5000)
 age = st.number_input("Age", min_value=18, max_value=70, value=30)
 overtime_yes = st.selectbox("OverTime", ["No", "Yes"])
@@ -23,21 +23,18 @@ years_at_company = st.number_input("Years at Company", min_value=0, value=3)
 satisfaction_score = st.slider("Satisfaction Score (0-10)", 0, 10, 7)
 remote_stress_score = st.slider("Remote Stress Score (0-10)", 0, 10, 3)
 
-# Convert categorical 'OverTime' to match training format
-overtime_encoded = 1 if overtime_yes == "Yes" else 0
-
-# ================== Convert Input to DataFrame ==================
+# ===== Prepare Input Data =====
 input_data = pd.DataFrame([[
-    monthly_income, age, overtime_encoded, daily_rate, total_working_years,
-    monthly_rate, employee_number, distance_from_home, hourly_rate,
-    years_at_company, satisfaction_score, remote_stress_score
+    monthly_income, age, overtime_yes, daily_rate, total_working_years,
+    monthly_rate, distance_from_home, hourly_rate, years_at_company,
+    satisfaction_score, remote_stress_score
 ]], columns=[
     'MonthlyIncome', 'Age', 'OverTime_Yes', 'DailyRate', 'TotalWorkingYears',
-    'MonthlyRate', 'EmployeeNumber', 'DistanceFromHome', 'HourlyRate',
-    'YearsAtCompany', 'SatisfactionScore', 'RemoteStressScore'
+    'MonthlyRate', 'DistanceFromHome', 'HourlyRate', 'YearsAtCompany',
+    'SatisfactionScore', 'RemoteStressScore'
 ])
 
-# ================== Predict ==================
+# ===== Predict on Button Click =====
 if st.button("Predict Attrition"):
     proba = stack_model.predict_proba(input_data)[:, 1][0]
     prediction = int(proba >= best_threshold)
