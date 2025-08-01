@@ -2,11 +2,12 @@ import streamlit as st
 import numpy as np
 import pandas as pd
 import joblib
+
 # ================== Load Model and Threshold ==================
-best_threshold = joblib.load("best_threshold.pkl")  # saved earlier
+stack_model = joblib.load("stacked_model.pkl")  # Your saved model
+best_threshold = joblib.load("best_threshold.pkl")  # Your saved threshold
 
 st.title("Employee Attrition Prediction App")
-
 st.write("Fill in the employee details below to predict the likelihood of attrition.")
 
 # ================== Define Inputs ==================
@@ -23,9 +24,12 @@ years_at_company = st.number_input("Years at Company", min_value=0, value=3)
 satisfaction_score = st.slider("Satisfaction Score (0-10)", 0, 10, 7)
 remote_stress_score = st.slider("Remote Stress Score (0-10)", 0, 10, 3)
 
+# Convert categorical 'OverTime' to match training format
+overtime_encoded = 1 if overtime_yes == "Yes" else 0
+
 # ================== Convert Input to DataFrame ==================
 input_data = pd.DataFrame([[
-    monthly_income, age, overtime_yes, daily_rate, total_working_years,
+    monthly_income, age, overtime_encoded, daily_rate, total_working_years,
     monthly_rate, employee_number, distance_from_home, hourly_rate,
     years_at_company, satisfaction_score, remote_stress_score
 ]], columns=[
@@ -44,5 +48,3 @@ if st.button("Predict Attrition"):
         st.error("⚠️ High risk of attrition!")
     else:
         st.success("✅ Low risk of attrition.")
-
-
