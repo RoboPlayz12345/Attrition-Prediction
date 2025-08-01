@@ -4,7 +4,6 @@ import pandas as pd
 import joblib
 
 # ================== Load Model and Threshold ==================
-stack_model = joblib.load("stacked_model.pkl")
 best_threshold = joblib.load("best_threshold.pkl")  # saved earlier
 
 st.title("Employee Attrition Prediction App")
