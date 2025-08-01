@@ -2,8 +2,7 @@ import streamlit as st
 import pandas as pd
 import joblib
 
-# ===== Load the single PKL file =====
-model_data = joblib.load("XG, RF, CAT, KGB.pkl")
+model_data = joblib.load("stacked_model.pkl")
 stack_model = model_data["model"]
 best_threshold = model_data["threshold"]
 
