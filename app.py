@@ -2,12 +2,13 @@ import streamlit as st
 import pandas as pd
 import joblib
 
+# ===== Load the single PKL file =====
 model_data = joblib.load("stacked_model.pkl")
 stack_model = model_data["model"]
 best_threshold = model_data["threshold"]
 
 st.title("Employee Attrition Prediction App")
-st.write("Fill in employee details to predict attrition risk.")
+st.write("Fill in employee details to predict the attrition risk.")
 
 # ===== User Inputs =====
 monthly_income = st.number_input("Monthly Income", min_value=0, value=5000)
@@ -22,9 +23,12 @@ years_at_company = st.number_input("Years at Company", min_value=0, value=3)
 satisfaction_score = st.slider("Satisfaction Score (0-10)", 0, 10, 7)
 remote_stress_score = st.slider("Remote Stress Score (0-10)", 0, 10, 3)
 
-# ===== Prepare Input Data =====
+# Convert OverTime to numeric if your model expects 0/1
+overtime_val = 1 if overtime_yes == "Yes" else 0
+
+# ===== Prepare Input DataFrame =====
 input_data = pd.DataFrame([[
-    monthly_income, age, overtime_yes, daily_rate, total_working_years,
+    monthly_income, age, overtime_val, daily_rate, total_working_years,
     monthly_rate, distance_from_home, hourly_rate, years_at_company,
     satisfaction_score, remote_stress_score
 ]], columns=[
