@@ -14,11 +14,8 @@ st.write("Fill in employee details to predict the attrition risk.")
 monthly_income = st.number_input("Monthly Income", min_value=0, value=5000)
 age = st.number_input("Age", min_value=18, max_value=70, value=30)
 overtime_yes = st.selectbox("OverTime", ["No", "Yes"])
-daily_rate = st.number_input("Daily Rate", min_value=0, value=800)
 total_working_years = st.number_input("Total Working Years", min_value=0, value=5)
-monthly_rate = st.number_input("Monthly Rate", min_value=0, value=15000)
 distance_from_home = st.number_input("Distance From Home (km)", min_value=0, value=5)
-hourly_rate = st.number_input("Hourly Rate", min_value=0, value=30)
 years_at_company = st.number_input("Years at Company", min_value=0, value=3)
 satisfaction_score = st.slider("Satisfaction Score (0-10)", 0, 10, 7)
 remote_stress_score = st.slider("Remote Stress Score (0-10)", 0, 10, 3)
@@ -47,4 +44,5 @@ if st.button("Predict Attrition"):
         st.error("⚠️ High risk of attrition!")
     else:
         st.success("✅ Low risk of attrition.")
+
 
