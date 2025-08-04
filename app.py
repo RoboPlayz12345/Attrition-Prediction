@@ -25,8 +25,8 @@ overtime_val = 1 if overtime_yes == "Yes" else 0
 
 # ===== Prepare Input DataFrame =====
 input_data = pd.DataFrame([[
-    monthly_income, age, overtime_val, daily_rate, total_working_years,
-    monthly_rate, distance_from_home, hourly_rate, years_at_company,
+    monthly_income, age, overtime_val, total_working_years,
+    distance_from_home, years_at_company,
     satisfaction_score, remote_stress_score
 ]], columns=[
     'MonthlyIncome', 'Age', 'OverTime_Yes', 'TotalWorkingYears',
@@ -44,6 +44,7 @@ if st.button("Predict Attrition"):
         st.error("⚠️ High risk of attrition!")
     else:
         st.success("✅ Low risk of attrition.")
+
 
 
 
