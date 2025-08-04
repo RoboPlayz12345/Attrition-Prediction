@@ -29,8 +29,8 @@ input_data = pd.DataFrame([[
     monthly_rate, distance_from_home, hourly_rate, years_at_company,
     satisfaction_score, remote_stress_score
 ]], columns=[
-    'MonthlyIncome', 'Age', 'OverTime_Yes', 'DailyRate', 'TotalWorkingYears',
-    'MonthlyRate', 'DistanceFromHome', 'HourlyRate', 'YearsAtCompany',
+    'MonthlyIncome', 'Age', 'OverTime_Yes', 'TotalWorkingYears',
+    'DistanceFromHome', 'YearsAtCompany',
     'SatisfactionScore', 'RemoteStressScore'
 ])
 
@@ -44,5 +44,6 @@ if st.button("Predict Attrition"):
         st.error("⚠️ High risk of attrition!")
     else:
         st.success("✅ Low risk of attrition.")
+
 
 
