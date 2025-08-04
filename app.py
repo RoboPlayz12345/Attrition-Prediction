@@ -3,7 +3,7 @@ import pandas as pd
 import joblib
 
 # ===== Load the single PKL file =====
-model_data = joblib.load("stacked_model.pkl")
+model_data = joblib.load("final_stacked_model.pkl")
 stack_model = model_data["model"]
 best_threshold = model_data["threshold"]
 
@@ -47,3 +47,4 @@ if st.button("Predict Attrition"):
         st.error("⚠️ High risk of attrition!")
     else:
         st.success("✅ Low risk of attrition.")
+
