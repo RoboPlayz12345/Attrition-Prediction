@@ -20,7 +20,7 @@ years_at_company = st.number_input("Years at Company", min_value=0, value=3)
 satisfaction_score = st.slider("Satisfaction Score (0-10)", 0, 10, 7)
 remote_stress_score = st.slider("Remote Stress Score (0-10)", 0, 10, 3)
 
-# Convert OverTime to numeric if your model expects 0/1
+# Convert OverTime to numeric 
 overtime_val = 1 if overtime_yes == "Yes" else 0
 
 # ===== Prepare Input DataFrame =====
@@ -44,6 +44,7 @@ if st.button("Predict Attrition"):
         st.error("⚠️ High risk of attrition!")
     else:
         st.success("✅ Low risk of attrition.")
+
 
 
 
