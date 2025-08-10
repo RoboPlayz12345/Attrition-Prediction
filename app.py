@@ -18,7 +18,7 @@ total_working_years = st.number_input("Total Working Years", min_value=0, value=
 distance_from_home = st.number_input("Distance From Home (km)", min_value=0, value=5)
 years_at_company = st.number_input("Years at Company", min_value=0, value=3)
 
-# Inputs needed to calculate SatisfactionScore
+# Inputs needed to calculate SatisfactionScore (dataset scale: 1–4)
 job_satisfaction = st.slider("Job Satisfaction (1-4)", 1, 4, 3)
 env_satisfaction = st.slider("Environment Satisfaction (1-4)", 1, 4, 3)
 work_life_balance = st.slider("Work-Life Balance (1-4)", 1, 4, 3)
@@ -43,11 +43,12 @@ input_data = pd.DataFrame([[
     'SatisfactionScore', 'RemoteStressScore'
 ])
 
-# ===== Predict Automatically =====
-proba = stack_model.predict_proba(input_data)[:, 1][0]
-prediction = int(proba >= best_threshold)
+# ===== Predict on Button Click =====
+if st.button("Predict Attrition"):
+    proba = stack_model.predict_proba(input_data)[:, 1][0]
+    prediction = int(proba >= best_threshold)
 
-if prediction == 1:
-    st.error("⚠️ High risk of attrition!")
-else:
-    st.success("✅ Low risk of attrition.")
+    if prediction == 1:
+        st.error("⚠️ High risk of attrition!")
+    else:
+        st.success("✅ Low risk of attrition.")
