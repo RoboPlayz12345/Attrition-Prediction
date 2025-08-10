@@ -39,11 +39,12 @@ if st.button("Predict Attrition"):
     proba = stack_model.predict_proba(input_data)[:, 1][0]
     prediction = int(proba >= best_threshold)
 
-    st.write(f"**Probability of Attrition:** {proba:.2f}")
+    
     if prediction == 1:
         st.error("⚠️ High risk of attrition!")
     else:
         st.success("✅ Low risk of attrition.")
+
 
 
 
