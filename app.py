@@ -18,31 +18,21 @@ total_working_years = st.number_input("Total Working Years", min_value=0, value=
 distance_from_home = st.number_input("Distance From Home (km)", min_value=0, value=5)
 years_at_company = st.number_input("Years at Company", min_value=0, value=3)
 
-# ===== Inputs for SatisfactionScore calculation =====
-job_satisfaction = st.slider("Job Satisfaction (0-10)", 0, 10, 7)
-env_satisfaction = st.slider("Environment Satisfaction (0-10)", 0, 10, 7)
-work_life_balance = st.slider("Work-Life Balance (0-10)", 0, 10, 7)
+# Inputs needed to calculate SatisfactionScore
+job_satisfaction = st.slider("Job Satisfaction (1-4)", 1, 4, 3)
+env_satisfaction = st.slider("Environment Satisfaction (1-4)", 1, 4, 3)
+work_life_balance = st.slider("Work-Life Balance (1-4)", 1, 4, 3)
 
-if st.button("Calculate Satisfaction Score"):
-    satisfaction_score = (job_satisfaction + env_satisfaction + work_life_balance) / 3
-    st.session_state.satisfaction_score = round(satisfaction_score, 2)
+# ===== Automatic Feature Calculation =====
+satisfaction_score = (job_satisfaction + env_satisfaction + work_life_balance) / 3
+overtime_val = 1 if overtime_yes == "Yes" else 0
+remote_stress_score = overtime_val * distance_from_home
 
-# Default if not calculated yet
-satisfaction_score = st.session_state.get("satisfaction_score", 7.0)
-st.write(f"**Satisfaction Score:** {satisfaction_score}")
-
-# ===== RemoteStressScore calculation =====
-if st.button("Calculate Remote Stress Score"):
-    overtime_val = 1 if overtime_yes == "Yes" else 0
-    remote_stress_score = overtime_val * distance_from_home
-    st.session_state.remote_stress_score = round(remote_stress_score, 2)
-
-remote_stress_score = st.session_state.get("remote_stress_score", 3.0)
-st.write(f"**Remote Stress Score:** {remote_stress_score}")
+# Show calculated values
+st.write(f"**Calculated Satisfaction Score:** {round(satisfaction_score, 2)}")
+st.write(f"**Calculated Remote Stress Score:** {round(remote_stress_score, 2)}")
 
 # ===== Prepare Input DataFrame =====
-overtime_val = 1 if overtime_yes == "Yes" else 0
-
 input_data = pd.DataFrame([[
     monthly_income, age, overtime_val, total_working_years,
     distance_from_home, years_at_company,
@@ -53,12 +43,11 @@ input_data = pd.DataFrame([[
     'SatisfactionScore', 'RemoteStressScore'
 ])
 
-# ===== Predict on Button Click =====
-if st.button("Predict Attrition"):
-    proba = stack_model.predict_proba(input_data)[:, 1][0]
-    prediction = int(proba >= best_threshold)
+# ===== Predict Automatically =====
+proba = stack_model.predict_proba(input_data)[:, 1][0]
+prediction = int(proba >= best_threshold)
 
-    if prediction == 1:
-        st.error("⚠️ High risk of attrition!")
-    else:
-        st.success("✅ Low risk of attrition.")
+if prediction == 1:
+    st.error("⚠️ High risk of attrition!")
+else:
+    st.success("✅ Low risk of attrition.")
