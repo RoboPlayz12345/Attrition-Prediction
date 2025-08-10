@@ -18,12 +18,12 @@ total_working_years = st.number_input("Total Working Years", min_value=0, value=
 distance_from_home = st.number_input("Distance From Home (km)", min_value=0, value=5)
 years_at_company = st.number_input("Years at Company", min_value=0, value=3)
 
-# Inputs needed to calculate SatisfactionScore (dataset scale: 1–4)
+# features for calc satisfaction score
 job_satisfaction = st.slider("Job Satisfaction (1-4)", 1, 4, 3)
 env_satisfaction = st.slider("Environment Satisfaction (1-4)", 1, 4, 3)
 work_life_balance = st.slider("Work-Life Balance (1-4)", 1, 4, 3)
 
-# ===== Automatic Feature Calculation =====
+# Main calc
 satisfaction_score = (job_satisfaction + env_satisfaction + work_life_balance) / 3
 overtime_val = 1 if overtime_yes == "Yes" else 0
 remote_stress_score = overtime_val * distance_from_home
@@ -52,3 +52,4 @@ if st.button("Predict Attrition"):
         st.error("⚠️ High risk of attrition!")
     else:
         st.success("✅ Low risk of attrition.")
+
